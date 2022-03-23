@@ -8,6 +8,10 @@ export function loadData() {
         });
     });
 }
+export function randomCharacter() {
+    var alpha = "abcdefghijklmnopqrstuvwxyz";
+    return alpha[Math.floor(Math.random() * alpha.length)];
+}
 export function randomWord(data, len) {
     var result = "";
     do {

@@ -9,6 +9,11 @@ export function loadData() {
   });
 }
 
+export function randomCharacter() {
+  var alpha:string = "abcdefghijklmnopqrstuvwxyz";
+  return alpha[Math.floor(Math.random() * alpha.length)];
+}
+
 export function randomWord(data:string[], len:number) {
   var result:string = "";
   do {

@@ -1,12 +1,13 @@
-import { generate } from "./board.js";
+import { Board } from "./board.js";
+import { regex } from "./regex.js";
 import * as utils from "./util.js";
 
 let data:string[] = [];
-let board:string[] = [];
+let board:Board;
 const WORD_LENGTH:number = 4;
 
-document.getElementById("generate").onclick = function() { makeAndSetBoard(data) };
-document.getElementById("validate").onclick = function() { validateBoard(board) };
+document.getElementById("generate").onclick = function() { start() };
+document.getElementById("validate").onclick = function() { validateBoard() };
 
 function clearBoard() {
   for (var i = 0; i < WORD_LENGTH; ++i) {
@@ -19,9 +20,9 @@ function clearBoard() {
   }
 }
 
-function validateBoard(board:string[]) {
+function validateBoard() {
   for (var i = 0; i < WORD_LENGTH; ++i) {
-    var word:string = board[i];
+    var word:string = board.words[i];
     var currentWord:string = "";
     for (var j = 0; j < WORD_LENGTH; ++j) {
       var ix:number = (i * 4) + j;
@@ -42,31 +43,40 @@ function validateBoard(board:string[]) {
 function makeAndSetBoard(data:string[]) {
   clearBoard();
 
-  board = [];
-  while (board.length == 0) {
-    board = generate(data);
+  board = new Board();
+  while (board.words.length == 0) {
+    board.generate(data);
   }
+
+  console.table(board.words);
 
   document.getElementById("help").textContent = "Generated.";
+}
 
-  for (var i = 0; i < WORD_LENGTH; ++i) {
-    var word:string = board[i];
+function makeAndSetRules() {
+  var topRegex:string = regex(board.top);
+  var bottomRegex:string = regex(board.bottom);
+  var leftRegex:string = regex(board.top);
+  var rightRegex:string = regex(board.top);
+  var rdiagRegex:string = regex(board.rdiag);
+  var ldiagRegex:string = regex(board.ldiag);
 
-    for (var j = 0; j < WORD_LENGTH; ++j) {
-      var cell:number = (i * 4) + j;
-      var gridID = `g${cell}`;
-      // document.getElementById(gridID.toString()).textContent = word[j];
-    }
-  }
+  document.getElementById("top").textContent = topRegex;
+  document.getElementById("bottom").textContent = bottomRegex;
+  document.getElementById("left").textContent = leftRegex;
+  document.getElementById("right").textContent = rightRegex;
+  document.getElementById("rdiag").textContent = rdiagRegex;
+  document.getElementById("ldiag").textContent = ldiagRegex;
+}
+
+function start() {
+  makeAndSetBoard(data);
+  makeAndSetRules();
 }
 
 async function main() {
   data = await utils.loadData() as string[];
-  makeAndSetBoard(data);
-
-  // I can get and set the text from an input element like this:
-  // var element:HTMLInputElement = document.getElementById("g0") as HTMLInputElement;
-  // element.value = "z";
+  start();
 }
 
 main();

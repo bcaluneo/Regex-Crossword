@@ -4,7 +4,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.generate = generate;
+exports.Board = void 0;
 
 var utils = _interopRequireWildcard(require("./util.js"));
 
@@ -12,7 +12,41 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-// HARLS NAMAZ TAPET GAZEE SOFAR VELAL
+class Board {
+  top;
+  bottom;
+  left;
+  right;
+  ldiag;
+  rdiag;
+  words;
+
+  constructor() {
+    this.words = [];
+  }
+
+  generate(data) {
+    this.words = [];
+    this.top = utils.randomWord(data, 4);
+    this.words.push(this.top);
+    this.left = utils.startsWith(data, this.top[0], this.top.length);
+    this.bottom = utils.startsWith(data, this.left[this.top.length - 1], this.top.length);
+    this.right = utils.startsAndEndsWith(data, this.top[this.top.length - 1], this.bottom[this.top.length - 1], this.top.length);
+    this.ldiag = utils.startsAndEndsWith(data, this.top[0], this.bottom[this.top.length - 1], this.top.length);
+    this.rdiag = utils.startsAndEndsWith(data, this.top[this.top.length - 1], this.bottom[0], this.top.length);
+    if (this.right == null || this.ldiag == null || this.rdiag == null || this.bottom == null) return [];
+    var secondWord = this.left[1].concat(this.ldiag[1]).concat(this.rdiag[1]).concat(this.right[1]);
+    var thirdWord = this.left[2].concat(this.rdiag[2]).concat(this.ldiag[2]).concat(this.right[2]);
+    this.words.push(secondWord);
+    this.words.push(thirdWord);
+    this.words.push(this.bottom);
+    return this.words;
+  }
+
+}
+
+exports.Board = Board;
+; // HARLS NAMAZ TAPET GAZEE SOFAR VELAL
 // OBELI OVARY ARULO OMENS AREFY IMIDO
 // PIKAS MINIM MERIL TASTE GARAD NAVEW
 // EDEMA ASSAI ERGAL TITER ANICE CIRES
@@ -23,28 +57,13 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 // DORW LA LP E    N
 //      ELPPA S   SO
 //            TSTNOH
-function generate(data) {
-  var result = [];
-  var seed = utils.randomWord(data, 4);
-  result.push(seed);
-  var left = utils.startsWith(data, seed[0], seed.length);
-  var bottom = utils.startsWith(data, left[seed.length - 1], seed.length);
-  var right = utils.startsAndEndsWith(data, seed[seed.length - 1], bottom[seed.length - 1], seed.length);
-  var leftDiag = utils.startsAndEndsWith(data, seed[0], bottom[seed.length - 1], seed.length);
-  var rightDiag = utils.startsAndEndsWith(data, seed[seed.length - 1], bottom[0], seed.length);
-  if (right == null || leftDiag == null || rightDiag == null || bottom == null) return [];
-  var secondWord = left[1].concat(leftDiag[1]).concat(rightDiag[1]).concat(right[1]);
-  var thirdWord = left[2].concat(rightDiag[2]).concat(leftDiag[2]).concat(right[2]);
-  result.push(secondWord);
-  result.push(thirdWord);
-  result.push(bottom);
-  return result;
-}
 
-},{"./util.js":3}],2:[function(require,module,exports){
+},{"./util.js":4}],2:[function(require,module,exports){
 "use strict";
 
 var _board = require("./board.js");
+
+var _regex = require("./regex.js");
 
 var utils = _interopRequireWildcard(require("./util.js"));
 
@@ -53,15 +72,15 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 let data = [];
-let board = [];
+let board;
 const WORD_LENGTH = 4;
 
 document.getElementById("generate").onclick = function () {
-  makeAndSetBoard(data);
+  start();
 };
 
 document.getElementById("validate").onclick = function () {
-  validateBoard(board);
+  validateBoard();
 };
 
 function clearBoard() {
@@ -75,9 +94,9 @@ function clearBoard() {
   }
 }
 
-function validateBoard(board) {
+function validateBoard() {
   for (var i = 0; i < WORD_LENGTH; ++i) {
-    var word = board[i];
+    var word = board.words[i];
     var currentWord = "";
 
     for (var j = 0; j < WORD_LENGTH; ++j) {
@@ -98,35 +117,166 @@ function validateBoard(board) {
 
 function makeAndSetBoard(data) {
   clearBoard();
-  board = [];
+  board = new _board.Board();
 
-  while (board.length == 0) {
-    board = (0, _board.generate)(data);
+  while (board.words.length == 0) {
+    board.generate(data);
   }
 
-  console.table(board);
+  console.table(board.words);
   document.getElementById("help").textContent = "Generated.";
+}
 
-  for (var i = 0; i < WORD_LENGTH; ++i) {
-    var word = board[i];
+function makeAndSetRules() {
+  var topRegex = (0, _regex.regex)(board.top);
+  var bottomRegex = (0, _regex.regex)(board.bottom);
+  var leftRegex = (0, _regex.regex)(board.top);
+  var rightRegex = (0, _regex.regex)(board.top);
+  var rdiagRegex = (0, _regex.regex)(board.rdiag);
+  var ldiagRegex = (0, _regex.regex)(board.ldiag);
+  document.getElementById("top").textContent = topRegex;
+  document.getElementById("bottom").textContent = bottomRegex;
+  document.getElementById("left").textContent = leftRegex;
+  document.getElementById("right").textContent = rightRegex;
+  document.getElementById("rdiag").textContent = rdiagRegex;
+  document.getElementById("ldiag").textContent = ldiagRegex;
+}
 
-    for (var j = 0; j < WORD_LENGTH; ++j) {
-      var cell = i * 4 + j;
-      var gridID = `g${cell}`; // document.getElementById(gridID.toString()).textContent = word[j];
-    }
-  }
+function start() {
+  makeAndSetBoard(data);
+  makeAndSetRules();
 }
 
 async function main() {
   data = await utils.loadData();
-  makeAndSetBoard(data); // I can get and set the text from an input element like this:
-  // var element:HTMLInputElement = document.getElementById("g0") as HTMLInputElement;
-  // element.value = "z";
+  start();
 }
 
 main();
 
-},{"./board.js":1,"./util.js":3}],3:[function(require,module,exports){
+},{"./board.js":1,"./regex.js":3,"./util.js":4}],3:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.regex = regex;
+
+var utils = _interopRequireWildcard(require("./util"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// Quantifiers
+// n*	0 or more n
+// n+	1 or more n
+// n?	0 or 1 n
+// Advanced maybe?
+// n{2}	Exactly 2 n
+// n{2,}	2 or more n
+// n{2,4}	2, 3 or 4 n
+// Ranges
+// (A|B)	A or B
+// [ABC]	Range (A, B or C)
+// [^ABC]	Not A, B or C
+// [A-Z]	Character between A and Z, upper case
+// [0-9]	Number between 0 and 9
+// [A-Z0-9]	Characters between A and Z, and numbers between 0 and 9
+// .	Any character except new line (\n)
+// 80 - 20
+// quantifier
+
+/*
+  1. 30% of being a range
+  2. 25% of being itself
+  3. 65% remaining:
+    1. check if last character, if true goto 3
+    2. if next character is the same:
+      2.1 45% chance of *
+      2.2 37% chance of +
+      2.3 18% chance of range
+    3. 29% to generate *, +, or ?
+    4. 12% to generate range
+*/
+// range
+
+/*
+  (random|A) or (A|random)
+*/
+function generateRange(char) {
+  var ran = utils.randomCharacter();
+
+  while (char == ran) {
+    ran = utils.randomCharacter();
+  }
+
+  var roll = Math.random();
+
+  if (roll <= .5) {
+    return `(${char}|${ran})`;
+  }
+
+  return `(${ran}|${char})`;
+}
+
+function regex(word) {
+  var result = "";
+  var skip = false;
+
+  for (var i = 0; i < word.length; ++i) {
+    if (skip) {
+      skip = false;
+      continue;
+    }
+
+    var roll = Math.random();
+
+    if (roll < .2) {
+      result += ".";
+    } else {
+      roll = Math.random();
+
+      if (roll < .3) {
+        result += generateRange(word[i]);
+      } else if (roll >= .3 && roll < .55) {
+        result += word[i];
+      } else {
+        if (i == word.length - 1) {
+          roll = Math.random();
+          result += word[i];
+
+          if (roll < .29) {
+            result += "*";
+          } else if (roll >= .29 && roll < 58) {
+            result += "+";
+          } else {
+            result += "?";
+          }
+        } else if (word[i] == word[i + 1]) {
+          roll = Math.random();
+
+          if (roll < .18) {
+            result += generateRange(word[i]);
+          } else if (roll >= .18 && roll < .55) {
+            result += word[i] + "+";
+            skip = true;
+          } else {
+            result += word[i] + "*";
+            skip = true;
+          }
+        } else {
+          result += generateRange(word[i]);
+        }
+      }
+    }
+  }
+
+  if (result == word) return regex(word);
+  return result;
+}
+
+},{"./util":4}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -135,6 +285,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.endsWith = endsWith;
 exports.endsWithArray = endsWithArray;
 exports.loadData = loadData;
+exports.randomCharacter = randomCharacter;
 exports.randomWord = randomWord;
 exports.startsAndEndsWith = startsAndEndsWith;
 exports.startsWith = startsWith;
@@ -149,6 +300,11 @@ function loadData() {
       resolve(split);
     });
   });
+}
+
+function randomCharacter() {
+  var alpha = "abcdefghijklmnopqrstuvwxyz";
+  return alpha[Math.floor(Math.random() * alpha.length)];
 }
 
 function randomWord(data, len) {

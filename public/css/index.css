@@ -32,6 +32,10 @@ button#validate {
 }
 
 table {
+  max-width: 25%;
+    max-height: 50%;
+    overflow: hidden;
+  table-layout: fixed;
   empty-cells: hide;
   height: 50%;
   width: 25%;
@@ -48,16 +52,36 @@ td, tr {
   text-align: center;
 }
 
-#horz {
+.horz {
   border: none;
+  word-wrap:break-word;
   font-size: 20px;
-  font-style: normal;
+  text-align: left;
+  font-style: bold;
 }
 
-#vert {
+.vert {
   font-size: 20px;
-  font-style: normal;
+  word-wrap:break-word;
+  text-align: left;
+  font-style: bold;
   transform: rotate(90deg);
+}
+
+.diag0 {
+  font-size: 20px;
+  word-wrap:break-word;
+  text-align: right;
+  font-style: bold;
+  transform: rotate(-45deg);
+}
+
+.diag1 {
+  font-size: 20px;
+  word-wrap:break-word;
+  text-align: right;
+  font-style: bold;
+  transform: rotate(45deg);
 }
 
 .cell {

@@ -1,5 +1,41 @@
 import * as utils from "./util.js";
 
+export class Board {
+  top:string;
+  bottom:string;
+  left:string;
+  right:string;
+  ldiag:string;
+  rdiag:string;
+  words:string[];
+
+  constructor() {
+    this.words = [];
+  }
+
+  generate(data:string[]): string[] {
+    this.words = [];
+    this.top = utils.randomWord(data, 4);
+    this.words.push(this.top);
+    this.left = utils.startsWith(data, this.top[0], this.top.length);
+    this.bottom = utils.startsWith(data, this.left[this.top.length - 1], this.top.length);
+    this.right = utils.startsAndEndsWith(data, this.top[this.top.length - 1], this.bottom[this.top.length - 1], this.top.length);
+    this.ldiag = utils.startsAndEndsWith(data, this.top[0], this.bottom[this.top.length - 1], this.top.length);
+    this.rdiag = utils.startsAndEndsWith(data, this.top[this.top.length - 1], this.bottom[0], this.top.length);
+
+    if (this.right == null || this.ldiag == null || this.rdiag == null || this.bottom == null) return [];
+
+    var secondWord:string = this.left[1].concat(this.ldiag[1]).concat(this.rdiag[1]).concat(this.right[1]);
+    var thirdWord:string = this.left[2].concat(this.rdiag[2]).concat(this.ldiag[2]).concat(this.right[2]);
+
+    this.words.push(secondWord);
+    this.words.push(thirdWord);
+    this.words.push(this.bottom);
+
+    return this.words;
+  }
+};
+
 // HARLS NAMAZ TAPET GAZEE SOFAR VELAL
 // OBELI OVARY ARULO OMENS AREFY IMIDO
 // PIKAS MINIM MERIL TASTE GARAD NAVEW
@@ -12,24 +48,3 @@ import * as utils from "./util.js";
 // DORW LA LP E    N
 //      ELPPA S   SO
 //            TSTNOH
-export function generate(data:string[]): string[] {
-  var result:string[] = [];
-  var seed:string = utils.randomWord(data, 4);
-  result.push(seed);
-  var left:string = utils.startsWith(data, seed[0], seed.length);
-  var bottom:string = utils.startsWith(data, left[seed.length - 1], seed.length);
-  var right:string = utils.startsAndEndsWith(data, seed[seed.length - 1], bottom[seed.length - 1], seed.length);
-  var leftDiag:string = utils.startsAndEndsWith(data, seed[0], bottom[seed.length - 1], seed.length);
-  var rightDiag:string = utils.startsAndEndsWith(data, seed[seed.length - 1], bottom[0], seed.length);
-
-  if (right == null || leftDiag == null || rightDiag == null || bottom == null) return [];
-
-  var secondWord:string = left[1].concat(leftDiag[1]).concat(rightDiag[1]).concat(right[1]);
-  var thirdWord:string = left[2].concat(rightDiag[2]).concat(leftDiag[2]).concat(right[2]);
-
-  result.push(secondWord);
-  result.push(thirdWord);
-  result.push(bottom);
-
-  return result;
-}
