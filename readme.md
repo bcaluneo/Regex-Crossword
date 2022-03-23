@@ -6,7 +6,7 @@ Right now it only generates 4x4 grids with the top, left, right, bottom, and dia
 being guaranteed to be words. The wordlist is from [this repo](https://github.com/redbo/scrabble)
 which is a few years old by now but it works fine for this project.
 
-INSERT IMAGE HERE
+[FINAL IMAGE TBD]
 
 This project is my first Typescript project and as such probably has more quirks than I would like but that is the nature of learning a new technology.
 
