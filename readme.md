@@ -26,4 +26,4 @@ npm install express
 npm install esmify
 ```
 
-The provided makefile can be used to build the project. It assumes the outputted `.js` files are placed in /js.
+The provided makefile can be used to build the project. It assumes the outputted `.js` files are placed in the public directory.
