@@ -1,14 +1,55 @@
+<!-- Copyright (C) Brendan Caluneo -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <title>Brendan Caluneo</title>
+    <title>Random Regex Crossword Generator</title>
+
+    <link rel="stylesheet" type="text/css" href="public/css/index.css">
     </head>
 
     <body>
-      <div id="test">
-        Hello :D
-      </div>
+      <table>
+        <tr> <!-- first row - rules only -->
+          <td></td>
+          <td style="border: none;" id="vr0"><div id="vert">RULE</div></td>
+          <td style="border: none;" id="vr1"><div id="vert">RULE</div></td>
+          <td style="border: none;" id="vr2"><div id="vert">RULE</div></td>
+          <td style="border: none;" id="vr3"><div id="vert">RULE</div></td>
+        </tr>
+        <tr> <!-- -->
+          <td style="border: none;"><div id="horz" id="hr0">RULE</div></td>
+          <td><input id="g0" class="cell" type="text" maxlength="1"></td>
+          <td><input id="g1" class="cell" type="text" maxlength="1"></td>
+          <td><input id="g2" class="cell" type="text" maxlength="1"></td>
+          <td><input id="g3" class="cell" type="text" maxlength="1"></td>
+        </tr>
+        <tr>
+          <td style="border: none;"><div id="horz" id="hr1">RULE</div></td>
+          <td><input id="g4" class="cell" type="text" maxlength="1"></td>
+          <td><input id="g5" class="cell" type="text" maxlength="1"></td>
+          <td><input id="g6" class="cell" type="text" maxlength="1"></td>
+          <td><input id="g7" class="cell" type="text" maxlength="1"></td>
+        </tr>
+        <tr>
+          <td style="border: none;"><div id="horz" id="hr2">RULE</div></td>
+          <td><input id="g8" class="cell" type="text" maxlength="1"></td>
+          <td><input id="g9" class="cell" type="text" maxlength="1"></td>
+          <td><input id="g10" class="cell" type="text" maxlength="1"></td>
+          <td><input id="g11" class="cell" type="text" maxlength="1"></td>
+        </tr>
+        <tr>
+          <td style="border: none;"><div id="horz" id="hr3">RULE</div></td>
+          <td><input id="g12" class="cell" type="text" maxlength="1"></td>
+          <td><input id="g13" class="cell" type="text" maxlength="1"></td>
+          <td><input id="g14" class="cell" type="text" maxlength="1"></td>
+          <td><input id="g15" class="cell" type="text" maxlength="1"></td>
+        </tr>
+      </table>
+      <button id="generate">Generate</button>
+      <div id="help" class="btwn"></div>
+      <button id="validate">Validate</button>
 
-      <script type ="module" src="js/bundle.js"></script>
+      <script type ="module" src="public/bundle.js"></script>
+
     </body>
 </html>

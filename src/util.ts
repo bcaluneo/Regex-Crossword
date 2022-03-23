@@ -1,7 +1,3 @@
-const fs = require("fs");
-let data:string[] = [];
-// const data:string[] = fs.readFileSync("./doc/scrabble.txt", "utf-8").split("\r\n");
-
 export function loadData() {
   return new Promise(resolve => {
     fetch('https://raw.githubusercontent.com/redbo/scrabble/master/dictionary.txt')

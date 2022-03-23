@@ -1,0 +1,70 @@
+body {
+  font-family: sans-serif;
+}
+
+button#generate {
+  position: absolute;
+  top: 70%; left: 40%;
+  width: 10%;
+  height: 5%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+button#validate {
+  position: absolute;
+  top: 70%; left: 60%;
+  width: 10%;
+  height: 5%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.btwn {
+  font-size:25px;
+  position: absolute;
+  top: 71%; left: 52%;
+  width: 10%;
+  height: 5%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+table {
+  empty-cells: hide;
+  height: 50%;
+  width: 25%;
+  position: absolute;
+  top: 30%;  left: 48%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+td, tr {
+  border: 1px solid black;
+  font-size: 30px;
+  font-style: normal;
+  text-align: center;
+}
+
+#horz {
+  border: none;
+  font-size: 20px;
+  font-style: normal;
+}
+
+#vert {
+  font-size: 20px;
+  font-style: normal;
+  transform: rotate(90deg);
+}
+
+.cell {
+  padding: none;
+  text-align: center;
+  font-size: 30px;
+  border:none;
+  width:80%;
+  height:100%;
+}

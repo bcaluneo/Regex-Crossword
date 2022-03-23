@@ -52,22 +52,76 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-async function main() {
-  var data = await utils.loadData(); // generate a board
-  // generate regex for all the cols and rows
-  // display the rules to the user
-  // validate at the end if the boards are equal
+let data = [];
+let board = [];
+const WORD_LENGTH = 4;
 
-  var board = [];
+document.getElementById("generate").onclick = function () {
+  makeAndSetBoard(data);
+};
+
+document.getElementById("validate").onclick = function () {
+  validateBoard(board);
+};
+
+function clearBoard() {
+  for (var i = 0; i < WORD_LENGTH; ++i) {
+    for (var j = 0; j < WORD_LENGTH; ++j) {
+      var ix = i * 4 + j;
+      var gridID = `g${ix}`;
+      var cell = document.getElementById(gridID);
+      cell.value = "";
+    }
+  }
+}
+
+function validateBoard(board) {
+  for (var i = 0; i < WORD_LENGTH; ++i) {
+    var word = board[i];
+    var currentWord = "";
+
+    for (var j = 0; j < WORD_LENGTH; ++j) {
+      var ix = i * 4 + j;
+      var gridID = `g${ix}`;
+      var cell = document.getElementById(gridID);
+      currentWord += cell.value.toString();
+    }
+
+    if (word != currentWord) {
+      document.getElementById("help").textContent = "Not quite.";
+      return;
+    }
+  }
+
+  document.getElementById("help").textContent = "Good job.";
+}
+
+function makeAndSetBoard(data) {
+  clearBoard();
+  board = [];
 
   while (board.length == 0) {
     board = (0, _board.generate)(data);
   }
 
   console.table(board);
-  document.getElementById("test").textContent = "pls work :D"; // board.forEach(string => {
-  //   document.getElementById("test").textContent += string;
-  // });
+  document.getElementById("help").textContent = "Generated.";
+
+  for (var i = 0; i < WORD_LENGTH; ++i) {
+    var word = board[i];
+
+    for (var j = 0; j < WORD_LENGTH; ++j) {
+      var cell = i * 4 + j;
+      var gridID = `g${cell}`; // document.getElementById(gridID.toString()).textContent = word[j];
+    }
+  }
+}
+
+async function main() {
+  data = await utils.loadData();
+  makeAndSetBoard(data); // I can get and set the text from an input element like this:
+  // var element:HTMLInputElement = document.getElementById("g0") as HTMLInputElement;
+  // element.value = "z";
 }
 
 main();
@@ -87,10 +141,6 @@ exports.startsWith = startsWith;
 exports.startsWithArray = startsWithArray;
 exports.startsWithArrayLen = startsWithArrayLen;
 exports.startsWithSubstring = startsWithSubstring;
-
-const fs = require("fs");
-
-let data = []; // const data:string[] = fs.readFileSync("./doc/scrabble.txt", "utf-8").split("\r\n");
 
 function loadData() {
   return new Promise(resolve => {
@@ -177,7 +227,5 @@ function startsAndEndsWith(data, s, e, len) {
 
   return result;
 }
-
-},{"fs":4}],4:[function(require,module,exports){
 
 },{}]},{},[2]);

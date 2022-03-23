@@ -1,13 +1,11 @@
 MAIN = server.js
-OUTDIR = dist
+OUTDIR = public
 SRCDIR = src
 
-run:
-	npx tsc --outDir "$(CURDIR)\js"
-	"$(CURDIR)"\node_modules\.bin\browserify "$(CURDIR)"\js\index.js -p esmify > "$(CURDIR)"\js\bundle.js
-	move "$(CURDIR)\js\$(MAIN)" "$(CURDIR)\$(MAIN)"
-	node "$(CURDIR)\$(MAIN)"
+build:
+	npx tsc --outDir "$(CURDIR)\public"
+	"$(CURDIR)"\node_modules\.bin\browserify "$(CURDIR)"\public\index.js -p esmify > "$(CURDIR)"\public\bundle.js
+	move "$(CURDIR)\public\$(MAIN)" "$(CURDIR)\$(MAIN)"
 
-setup:
-	mkdir $(OUTDIR)
-	mkdir $(SRCDIR)
+run : build
+	node "$(CURDIR)"\$(MAIN)
