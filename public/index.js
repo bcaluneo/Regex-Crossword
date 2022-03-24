@@ -21,7 +21,6 @@ function clearBoard() {
 function validateBoard() {
     for (var i = 0; i < WORD_LENGTH; ++i) {
         var word = board.words[i];
-        var currentWord = "";
         for (var j = 0; j < WORD_LENGTH; ++j) {
             var ix = (i * 4) + j;
             var gridID = `g${ix}`;
@@ -34,7 +33,6 @@ function validateBoard() {
                 cell.style.background = "#aaffaa";
                 cell.parentElement.style.background = "#aaffaa";
             }
-            currentWord += cell.value.toString();
         }
     }
 }
@@ -60,19 +58,6 @@ function makeAndSetRules() {
         var rule = regex(word);
         document.getElementById(`d${i}`).textContent = rule;
     }
-    // var topRegex:string = regex(board.top);
-    // var bottomRegex:string = regex(board.bottom);
-    // var leftRegex:string = regex(board.top);
-    // var rightRegex:string = regex(board.top);
-    // var rdiagRegex:string = regex(board.rdiag);
-    // var ldiagRegex:string = regex(board.ldiag);
-    //
-    // document.getElementById("top").textContent = topRegex;
-    // document.getElementById("bottom").textContent = bottomRegex;
-    // document.getElementById("left").textContent = leftRegex;
-    // document.getElementById("right").textContent = rightRegex;
-    // document.getElementById("rdiag").textContent = rdiagRegex;
-    // document.getElementById("ldiag").textContent = ldiagRegex;
 }
 function start() {
     makeAndSetBoard(data);

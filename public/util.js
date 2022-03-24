@@ -3,13 +3,15 @@ export function loadData() {
         fetch('https://raw.githubusercontent.com/redbo/scrabble/master/dictionary.txt')
             .then(response => response.text())
             .then(responseText => {
-            var split = responseText.split("\n");
+            var split = responseText.split("\n").filter((val, ix, arr) => {
+                return val.length == 4;
+            });
             resolve(split);
         });
     });
 }
 export function randomCharacter() {
-    var alpha = "abcdefghijklmnopqrstuvwxyz";
+    var alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     return alpha[Math.floor(Math.random() * alpha.length)];
 }
 export function randomWord(data, len) {

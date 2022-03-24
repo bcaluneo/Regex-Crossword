@@ -99,7 +99,6 @@ function clearBoard() {
 function validateBoard() {
   for (var i = 0; i < WORD_LENGTH; ++i) {
     var word = board.words[i];
-    var currentWord = "";
 
     for (var j = 0; j < WORD_LENGTH; ++j) {
       var ix = i * 4 + j;
@@ -113,8 +112,6 @@ function validateBoard() {
         cell.style.background = "#aaffaa";
         cell.parentElement.style.background = "#aaffaa";
       }
-
-      currentWord += cell.value.toString();
     }
   }
 }
@@ -146,20 +143,7 @@ function makeAndSetRules() {
 
     var rule = (0, _regex.regex)(word);
     document.getElementById(`d${i}`).textContent = rule;
-  } // var topRegex:string = regex(board.top);
-  // var bottomRegex:string = regex(board.bottom);
-  // var leftRegex:string = regex(board.top);
-  // var rightRegex:string = regex(board.top);
-  // var rdiagRegex:string = regex(board.rdiag);
-  // var ldiagRegex:string = regex(board.ldiag);
-  //
-  // document.getElementById("top").textContent = topRegex;
-  // document.getElementById("bottom").textContent = bottomRegex;
-  // document.getElementById("left").textContent = leftRegex;
-  // document.getElementById("right").textContent = rightRegex;
-  // document.getElementById("rdiag").textContent = rdiagRegex;
-  // document.getElementById("ldiag").textContent = ldiagRegex;
-
+  }
 }
 
 function start() {
@@ -316,14 +300,16 @@ exports.startsWithSubstring = startsWithSubstring;
 function loadData() {
   return new Promise(resolve => {
     fetch('https://raw.githubusercontent.com/redbo/scrabble/master/dictionary.txt').then(response => response.text()).then(responseText => {
-      var split = responseText.split("\n");
+      var split = responseText.split("\n").filter((val, ix, arr) => {
+        return val.length == 4;
+      });
       resolve(split);
     });
   });
 }
 
 function randomCharacter() {
-  var alpha = "abcdefghijklmnopqrstuvwxyz";
+  var alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   return alpha[Math.floor(Math.random() * alpha.length)];
 }
 
