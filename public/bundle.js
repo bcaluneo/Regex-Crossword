@@ -185,8 +185,10 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 // [ABC]	Range (A, B or C)
 // [^ABC]	Not A, B or C
 // [A-Z]	Character between A and Z, upper case
-// [0-9]	Number between 0 and 9
-// [A-Z0-9]	Characters between A and Z, and numbers between 0 and 9
+// 25% of being any type of range
+// there's code in place for (A|B)
+// [ABC]:
+// pick character and 2 random characters
 // .	Any character except new line (\n)
 // 80 - 20
 // quantifier
@@ -208,20 +210,93 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 /*
   (random|A) or (A|random)
 */
-function generateRange(char) {
-  var ran = utils.randomCharacter();
+function permute(chars) {
+  var result = ""; // var nums:number = chars.length;
+  // while (result.length != chars.length) {
+  //   var roll:number = Math.floor(Math.random() * nums);
+  //   var c:string = chars[roll];
+  //   if (result.indexOf(c) == -1) {
+  //     result += c;
+  //     nums -= 1;
+  //   }
+  // }
 
-  while (char == ran) {
-    ran = utils.randomCharacter();
+  for (var char of chars) {
+    result += char;
   }
 
+  return result;
+}
+
+function generateRange(char) {
   var roll = Math.random();
 
-  if (roll <= .5) {
-    return `(${char}|${ran})`;
+  if (roll < .25) {
+    var ran = utils.randomCharacter();
+
+    while (char == ran) {
+      ran = utils.randomCharacter();
+    }
+
+    roll = Math.random();
+
+    if (roll <= .5) {
+      return `(${char}|${ran})`;
+    }
+
+    return `(${ran}|${char})`;
+  } else if (roll >= .25 && roll < .50) {
+    var ran0 = utils.randomCharacter();
+    var ran1 = utils.randomCharacter();
+
+    while (ran0 == ran1 || ran0 == char || ran1 == char) {
+      ran0 = utils.randomCharacter();
+      ran1 = utils.randomCharacter();
+    } // var result:string = permute([char, ran0, ran1]);
+
+
+    var result = char + ran0 + ran1;
+    return `[${result}]`;
+  } else if (roll >= .5 && roll < .75) {
+    var ix = utils.getIndexFromChar(char);
+    var first = utils.getCharFromIndex(Math.abs(4 - ix));
+    var second = utils.getCharFromIndex(Math.abs(8 - ix));
+    var third = utils.getCharFromIndex(Math.abs(12 - ix)); // var result:string = permute([first, second, third]);
+
+    return `[${char}]`;
+  } else {
+    return `[${char}]`;
+  }
+}
+
+function generateUnary(char) {
+  var op = "";
+  var roll = Math.random();
+
+  if (roll < .29) {
+    op = "*";
+  } else if (roll >= .29 && roll < 58) {
+    op = "+";
+  } else {
+    op = "?";
   }
 
-  return `(${ran}|${char})`;
+  return `${char}${op}`;
+}
+
+function generateSameUnary(char) {
+  var op = "";
+  var roll = Math.random();
+
+  if (roll < .18) {
+    return generateRange(char);
+  } else if (roll >= .18 && roll < .55) {
+    op = "+";
+  } else {
+    op = "*";
+  }
+
+  return `${char}${op}`;
 }
 
 function regex(word) {
@@ -248,27 +323,11 @@ function regex(word) {
       } else {
         if (i == word.length - 1) {
           roll = Math.random();
-          result += word[i];
-
-          if (roll < .29) {
-            result += "*";
-          } else if (roll >= .29 && roll < 58) {
-            result += "+";
-          } else {
-            result += "?";
-          }
+          result += generateUnary(word[i]);
         } else if (word[i] == word[i + 1]) {
           roll = Math.random();
-
-          if (roll < .18) {
-            result += generateRange(word[i]);
-          } else if (roll >= .18 && roll < .55) {
-            result += word[i] + "+";
-            skip = true;
-          } else {
-            result += word[i] + "*";
-            skip = true;
-          }
+          result += generateSameUnary(word[i]);
+          skip = result[result.length - 1] == "+" || result[result.length - 1] == "*";
         } else {
           result += generateRange(word[i]);
         }
@@ -288,6 +347,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.endsWith = endsWith;
 exports.endsWithArray = endsWithArray;
+exports.getCharFromIndex = getCharFromIndex;
+exports.getIndexFromChar = getIndexFromChar;
 exports.loadData = loadData;
 exports.randomCharacter = randomCharacter;
 exports.randomWord = randomWord;
@@ -311,6 +372,14 @@ function loadData() {
 function randomCharacter() {
   var alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   return alpha[Math.floor(Math.random() * alpha.length)];
+}
+
+function getCharFromIndex(index) {
+  return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[index];
+}
+
+function getIndexFromChar(char) {
+  return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(char);
 }
 
 function randomWord(data, len) {

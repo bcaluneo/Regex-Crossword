@@ -6,18 +6,26 @@ export function loadData() {
         var split:string[] = responseText.split("\n").filter((val, ix, arr) => {
           return val.length == 4;
         });
-        
+
         resolve(split);
       });
   });
 }
 
-export function randomCharacter() {
+export function randomCharacter():string {
   var alpha:string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   return alpha[Math.floor(Math.random() * alpha.length)];
 }
 
-export function randomWord(data:string[], len:number) {
+export function getCharFromIndex(index:number):string {
+  return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[index];
+}
+
+export function getIndexFromChar(char:string):number {
+  return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(char);
+}
+
+export function randomWord(data:string[], len:number):string {
   var result:string = "";
   do {
     result = data[Math.floor(Math.random() * data.length)];

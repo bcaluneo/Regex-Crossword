@@ -14,6 +14,12 @@ export function randomCharacter() {
     var alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     return alpha[Math.floor(Math.random() * alpha.length)];
 }
+export function getCharFromIndex(index) {
+    return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[index];
+}
+export function getIndexFromChar(char) {
+    return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(char);
+}
 export function randomWord(data, len) {
     var result = "";
     do {
