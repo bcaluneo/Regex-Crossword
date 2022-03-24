@@ -9,54 +9,58 @@
 
     <body>
       <table>
-        <tr> <!-- first row - rules only -->
-          <td></td>
-          <td style="border: none;"><div id="left" class="vert"></div></td>
-          <td></td>
-          <td></td>
-          <td style="border: none;"><div id="right" class="vert"></div></td>
-          <td style="border: none;"><div id="rdiag" class="diag0"></div></td>
-        </tr>
         <tr> <!-- -->
-          <td style="border: none;"><div id="top" class="horz"></div></td>
           <td><input id="g0" class="cell" type="text" maxlength="1"></td>
           <td><input id="g1" class="cell" type="text" maxlength="1"></td>
           <td><input id="g2" class="cell" type="text" maxlength="1"></td>
           <td><input id="g3" class="cell" type="text" maxlength="1"></td>
         </tr>
         <tr>
-          <td></td>
           <td><input id="g4" class="cell" type="text" maxlength="1"></td>
           <td><input id="g5" class="cell" type="text" maxlength="1"></td>
           <td><input id="g6" class="cell" type="text" maxlength="1"></td>
           <td><input id="g7" class="cell" type="text" maxlength="1"></td>
         </tr>
         <tr>
-          <td></td>
           <td><input id="g8" class="cell" type="text" maxlength="1"></td>
           <td><input id="g9" class="cell" type="text" maxlength="1"></td>
           <td><input id="g10" class="cell" type="text" maxlength="1"></td>
           <td><input id="g11" class="cell" type="text" maxlength="1"></td>
         </tr>
         <tr>
-          <td style="border: none;"><div id="bottom" class="horz"></div></td>
           <td><input id="g12" class="cell" type="text" maxlength="1"></td>
           <td><input id="g13" class="cell" type="text" maxlength="1"></td>
           <td><input id="g14" class="cell" type="text" maxlength="1"></td>
           <td><input id="g15" class="cell" type="text" maxlength="1"></td>
         </tr>
+      </table>
+
+      <table class="rules">
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td style="border: none;"><div id="ldiag" class="diag1">RULE</div></td>
+          <th colspan="6">Rules</th>
+        </tr>
+
+        <tr>
+          <th>Down</th>
+          <td id="d0" class="rules"></td>
+          <td id="d1" class="rules"></td>
+          <td id="d2" class="rules"></td>
+          <td id="d3" class="rules"></td>
+        </tr>
+
+        <tr>
+          <th>Across</th>
+          <td id = "a0" class="rules"></td>
+          <td id = "a1" class="rules"></td>
+          <td id = "a2" class="rules"></td>
+          <td id = "a3" class="rules"></td>
         </tr>
       </table>
+
       <button id="generate">Generate</button>
-      <div id="help" class="btwn"></div>
       <button id="validate">Validate</button>
+
+      <div id="footer">replace_me</div>
 
       <script type ="module" src="public/bundle.js"></script>
 

@@ -15,6 +15,8 @@ function clearBoard() {
       var ix:number = (i * 4) + j;
       var gridID:string = `g${ix}`;
       var cell:HTMLInputElement = document.getElementById(gridID) as HTMLInputElement;
+      cell.style.background = "#ffffff";
+      cell.parentElement.style.background = "#ffffff";
       cell.value = "";
     }
   }
@@ -23,21 +25,19 @@ function clearBoard() {
 function validateBoard() {
   for (var i = 0; i < WORD_LENGTH; ++i) {
     var word:string = board.words[i];
-    var currentWord:string = "";
     for (var j = 0; j < WORD_LENGTH; ++j) {
       var ix:number = (i * 4) + j;
       var gridID:string = `g${ix}`;
       var cell:HTMLInputElement = document.getElementById(gridID) as HTMLInputElement;
-      currentWord += cell.value.toString();
-    }
-
-    if (word != currentWord) {
-      document.getElementById("help").textContent = "Not quite.";
-      return;
+      if (word[j] != cell.value.toString()) {
+        cell.style.background = "#ffaaaa";
+        cell.parentElement.style.background = "#ffaaaa";
+      } else {
+        cell.style.background = "#aaffaa";
+        cell.parentElement.style.background = "#aaffaa";
+      }
     }
   }
-
-  document.getElementById("help").textContent = "Good job.";
 }
 
 function makeAndSetBoard(data:string[]) {
@@ -49,24 +49,26 @@ function makeAndSetBoard(data:string[]) {
   }
 
   console.table(board.words);
-
-  document.getElementById("help").textContent = "Generated.";
 }
 
 function makeAndSetRules() {
-  var topRegex:string = regex(board.top);
-  var bottomRegex:string = regex(board.bottom);
-  var leftRegex:string = regex(board.top);
-  var rightRegex:string = regex(board.top);
-  var rdiagRegex:string = regex(board.rdiag);
-  var ldiagRegex:string = regex(board.ldiag);
+  for (var i = 0; i < 4; ++i) {
+      var word:string = board.words[i];
+      var rule:string = regex(word);
+      document.getElementById(`a${i}`).textContent = rule;
 
-  document.getElementById("top").textContent = topRegex;
-  document.getElementById("bottom").textContent = bottomRegex;
-  document.getElementById("left").textContent = leftRegex;
-  document.getElementById("right").textContent = rightRegex;
-  document.getElementById("rdiag").textContent = rdiagRegex;
-  document.getElementById("ldiag").textContent = ldiagRegex;
+  }
+
+  for (var i = 0; i < 4; ++i) {
+    var word:string = board.words[0][i];
+
+    for (var j = 1; j < 4; ++j) {
+      word += board.words[j][i];
+    }
+
+    var rule:string = regex(word);
+    document.getElementById(`d${i}`).textContent = rule;
+  }
 }
 
 function start() {

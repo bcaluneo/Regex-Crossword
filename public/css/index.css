@@ -4,7 +4,7 @@ body {
 
 button#generate {
   position: absolute;
-  top: 70%; left: 40%;
+  top: 80%; left: 50%;
   width: 10%;
   height: 5%;
   margin-right: -50%;
@@ -13,7 +13,7 @@ button#generate {
 
 button#validate {
   position: absolute;
-  top: 70%; left: 60%;
+  top: 72%; left: 50%;
   width: 10%;
   height: 5%;
   margin-right: -50%;
@@ -31,16 +31,24 @@ button#validate {
   transform: translate(-50%, -50%);
 }
 
+table.rules {
+  height: 15%;
+  width: 50%;
+  table-layout: fixed;
+  position: absolute;
+  top: 60%;  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
 table {
-  max-width: 25%;
-    max-height: 50%;
-    overflow: hidden;
+  overflow: hidden;
   table-layout: fixed;
   empty-cells: hide;
-  height: 50%;
-  width: 25%;
+  height: 40%;
+  width: 20%;
   position: absolute;
-  top: 30%;  left: 48%;
+  top: 30%;  left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%);
 }
@@ -52,36 +60,51 @@ td, tr {
   text-align: center;
 }
 
+td.rules {
+  border: 1px solid black;
+  font-size: 15px;
+  font-style: bold;
+  text-align: center;
+}
+
+th {
+  font-size: 15px;
+}
+
 .horz {
   border: none;
   word-wrap:break-word;
-  font-size: 20px;
+  font-size: 14px;
   text-align: left;
   font-style: bold;
+  overflow: visible;
 }
 
 .vert {
   font-size: 20px;
-  word-wrap:break-word;
-  text-align: left;
-  font-style: bold;
+  text-align: right;
   transform: rotate(90deg);
+  overflow: visible;
+  white-space: nowrap;
 }
 
 .diag0 {
-  font-size: 20px;
+  font-size: 14px;
   word-wrap:break-word;
   text-align: right;
   font-style: bold;
   transform: rotate(-45deg);
+  overflow: visible;
+  white-space: nowrap;
 }
 
 .diag1 {
-  font-size: 20px;
+  font-size: 14px;
   word-wrap:break-word;
   text-align: right;
   font-style: bold;
-  transform: rotate(45deg);
+  overflow: visible;
+  white-space: nowrap;
 }
 
 .cell {
@@ -91,4 +114,12 @@ td, tr {
   border:none;
   width:80%;
   height:100%;
+}
+
+#footer {
+  text-align: center;
+  padding-bottom: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }

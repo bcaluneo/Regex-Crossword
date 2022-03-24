@@ -12,6 +12,8 @@ function clearBoard() {
             var ix = (i * 4) + j;
             var gridID = `g${ix}`;
             var cell = document.getElementById(gridID);
+            cell.style.background = "#ffffff";
+            cell.parentElement.style.background = "#ffffff";
             cell.value = "";
         }
     }
@@ -24,14 +26,17 @@ function validateBoard() {
             var ix = (i * 4) + j;
             var gridID = `g${ix}`;
             var cell = document.getElementById(gridID);
+            if (word[j] != cell.value.toString()) {
+                cell.style.background = "#ffaaaa";
+                cell.parentElement.style.background = "#ffaaaa";
+            }
+            else {
+                cell.style.background = "#aaffaa";
+                cell.parentElement.style.background = "#aaffaa";
+            }
             currentWord += cell.value.toString();
         }
-        if (word != currentWord) {
-            document.getElementById("help").textContent = "Not quite.";
-            return;
-        }
     }
-    document.getElementById("help").textContent = "Good job.";
 }
 function makeAndSetBoard(data) {
     clearBoard();
@@ -40,21 +45,34 @@ function makeAndSetBoard(data) {
         board.generate(data);
     }
     console.table(board.words);
-    document.getElementById("help").textContent = "Generated.";
 }
 function makeAndSetRules() {
-    var topRegex = regex(board.top);
-    var bottomRegex = regex(board.bottom);
-    var leftRegex = regex(board.top);
-    var rightRegex = regex(board.top);
-    var rdiagRegex = regex(board.rdiag);
-    var ldiagRegex = regex(board.ldiag);
-    document.getElementById("top").textContent = topRegex;
-    document.getElementById("bottom").textContent = bottomRegex;
-    document.getElementById("left").textContent = leftRegex;
-    document.getElementById("right").textContent = rightRegex;
-    document.getElementById("rdiag").textContent = rdiagRegex;
-    document.getElementById("ldiag").textContent = ldiagRegex;
+    for (var i = 0; i < 4; ++i) {
+        var word = board.words[i];
+        var rule = regex(word);
+        document.getElementById(`a${i}`).textContent = rule;
+    }
+    for (var i = 0; i < 4; ++i) {
+        var word = board.words[0][i];
+        for (var j = 1; j < 4; ++j) {
+            word += board.words[j][i];
+        }
+        var rule = regex(word);
+        document.getElementById(`d${i}`).textContent = rule;
+    }
+    // var topRegex:string = regex(board.top);
+    // var bottomRegex:string = regex(board.bottom);
+    // var leftRegex:string = regex(board.top);
+    // var rightRegex:string = regex(board.top);
+    // var rdiagRegex:string = regex(board.rdiag);
+    // var ldiagRegex:string = regex(board.ldiag);
+    //
+    // document.getElementById("top").textContent = topRegex;
+    // document.getElementById("bottom").textContent = bottomRegex;
+    // document.getElementById("left").textContent = leftRegex;
+    // document.getElementById("right").textContent = rightRegex;
+    // document.getElementById("rdiag").textContent = rdiagRegex;
+    // document.getElementById("ldiag").textContent = ldiagRegex;
 }
 function start() {
     makeAndSetBoard(data);
