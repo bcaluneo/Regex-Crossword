@@ -1,6 +1,6 @@
-import { Board } from "./board.js";
-import { regex } from "./regex.js";
-import * as utils from "./util.js";
+import { Board } from "./board";
+import { regex } from "./regex";
+import * as utils from "./util";
 
 let data:string[] = [];
 let board:Board;
@@ -42,9 +42,7 @@ function validateBoard() {
 
 function makeAndSetBoard(data:string[]) {
   clearBoard();
-
-  board = new Board();
-  while (board.words.length == 0) {
+  while (board.words.length < WORD_LENGTH) {
     board.generate(data);
   }
 
@@ -53,10 +51,9 @@ function makeAndSetBoard(data:string[]) {
 
 function makeAndSetRules() {
   for (var i = 0; i < 4; ++i) {
-      var word:string = board.words[i];
-      var rule:string = regex(word);
-      document.getElementById(`a${i}`).textContent = rule;
-
+    var word:string = board.words[i];
+    var rule:string = regex(word);
+    document.getElementById(`a${i}`).textContent = rule;
   }
 
   for (var i = 0; i < 4; ++i) {
@@ -78,6 +75,7 @@ function start() {
 
 async function main() {
   data = await utils.loadData() as string[];
+  board = new Board();
   start();
 }
 

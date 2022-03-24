@@ -1,6 +1,6 @@
-import { Board } from "./board.js";
-import { regex } from "./regex.js";
-import * as utils from "./util.js";
+import { Board } from "./board";
+import { regex } from "./regex";
+import * as utils from "./util";
 let data = [];
 let board;
 const WORD_LENGTH = 4;
@@ -38,8 +38,7 @@ function validateBoard() {
 }
 function makeAndSetBoard(data) {
     clearBoard();
-    board = new Board();
-    while (board.words.length == 0) {
+    while (board.words.length < WORD_LENGTH) {
         board.generate(data);
     }
     console.table(board.words);
@@ -65,6 +64,7 @@ function start() {
 }
 async function main() {
     data = await utils.loadData();
+    board = new Board();
     start();
 }
 main();

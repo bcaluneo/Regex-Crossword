@@ -75,7 +75,7 @@ function generateRange(char:string):string {
 
     // var result:string = permute([first, second, third]);
     var result:string = first + second + third;
-    return `[${^result}]`;
+    return `[^${result}]`;
   } else {
     return `[${char}]`;
   }

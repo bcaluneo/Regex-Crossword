@@ -33,7 +33,7 @@ button#validate {
 
 table.rules {
   height: 15%;
-  width: 50%;
+  width: 75%;
   table-layout: fixed;
   position: absolute;
   top: 60%;  left: 50%;

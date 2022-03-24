@@ -35,22 +35,6 @@ import * as utils from "./util";
 /*
   (random|A) or (A|random)
 */
-function permute(chars) {
-    var result = "";
-    // var nums:number = chars.length;
-    // while (result.length != chars.length) {
-    //   var roll:number = Math.floor(Math.random() * nums);
-    //   var c:string = chars[roll];
-    //   if (result.indexOf(c) == -1) {
-    //     result += c;
-    //     nums -= 1;
-    //   }
-    // }
-    for (var char of chars) {
-        result += char;
-    }
-    return result;
-}
 function generateRange(char) {
     var roll = Math.random();
     if (roll < .25) {
@@ -81,7 +65,8 @@ function generateRange(char) {
         var second = utils.getCharFromIndex(Math.abs(8 - ix));
         var third = utils.getCharFromIndex(Math.abs(12 - ix));
         // var result:string = permute([first, second, third]);
-        return `[${char}]`;
+        var result = first + second + third;
+        return `[^${result}]`;
     }
     else {
         return `[${char}]`;

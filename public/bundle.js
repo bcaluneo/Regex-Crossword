@@ -61,11 +61,11 @@ exports.Board = Board;
 },{"./util.js":4}],2:[function(require,module,exports){
 "use strict";
 
-var _board = require("./board.js");
+var _board = require("./board");
 
-var _regex = require("./regex.js");
+var _regex = require("./regex");
 
-var utils = _interopRequireWildcard(require("./util.js"));
+var utils = _interopRequireWildcard(require("./util"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -118,9 +118,8 @@ function validateBoard() {
 
 function makeAndSetBoard(data) {
   clearBoard();
-  board = new _board.Board();
 
-  while (board.words.length == 0) {
+  while (board.words.length < WORD_LENGTH) {
     board.generate(data);
   }
 
@@ -153,12 +152,13 @@ function start() {
 
 async function main() {
   data = await utils.loadData();
+  board = new _board.Board();
   start();
 }
 
 main();
 
-},{"./board.js":1,"./regex.js":3,"./util.js":4}],3:[function(require,module,exports){
+},{"./board":1,"./regex":3,"./util":4}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -210,24 +210,6 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 /*
   (random|A) or (A|random)
 */
-function permute(chars) {
-  var result = ""; // var nums:number = chars.length;
-  // while (result.length != chars.length) {
-  //   var roll:number = Math.floor(Math.random() * nums);
-  //   var c:string = chars[roll];
-  //   if (result.indexOf(c) == -1) {
-  //     result += c;
-  //     nums -= 1;
-  //   }
-  // }
-
-  for (var char of chars) {
-    result += char;
-  }
-
-  return result;
-}
-
 function generateRange(char) {
   var roll = Math.random();
 
@@ -263,7 +245,8 @@ function generateRange(char) {
     var second = utils.getCharFromIndex(Math.abs(8 - ix));
     var third = utils.getCharFromIndex(Math.abs(12 - ix)); // var result:string = permute([first, second, third]);
 
-    return `[${char}]`;
+    var result = first + second + third;
+    return `[^${result}]`;
   } else {
     return `[${char}]`;
   }
