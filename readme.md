@@ -16,12 +16,13 @@ This project is built using NodeJS with the Typescript, browserify, express, and
 
 `git clone git@github.com:bcaluneo/Regex-Crossword`
 
-Then install the modules:
+Then install the modules and types:
 ```
 npm install typescript --save-dev
 npm install browserify
 npm install express
 npm install esmify
+npm install --save-dev @types/node
 ```
 
 The provided makefile can be used to build the project. It assumes the outputted `.js` files are placed in the public directory.
