@@ -1,4 +1,4 @@
-# Random Regex Crossword Generator
+# Regex Crossword Generator
 
 First and foremost this project was inspired by [Regex Crossword](https://regexcrossword.com)
 and they deserve the credit. This project seeks to generate random crosswords and the regex rules to solve them.
