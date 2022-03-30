@@ -8,7 +8,7 @@ which is a few years old by now but it works fine for this project.
 
 This project is my first Typescript project and as such probably has more quirks than I would like but that is the nature of learning a new technology.
 
-You can access a verion of the project hosted on my website [here](https://bcaluneo.com/regex/).
+You can access a version of the project hosted on my website [here](https://bcaluneo.com/regex/).
 
 ## Building
 
